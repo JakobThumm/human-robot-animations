@@ -2,7 +2,7 @@
     "position_offset": [
         0.4,
         1.0,
-        0.3
+        -0.7
     ],
     "scale": 1.0,
     "orientation_quat": [
@@ -10,5 +10,14 @@
         1.0,
         0.0,
         0.0
+    ],
+    "target_pos":[
+        0.4,
+        -0.06,
+        1.35
+    ],
+    "keyframes": [
+        100,
+        200
     ]
 }
