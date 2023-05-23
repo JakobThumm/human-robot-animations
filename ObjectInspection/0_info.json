@@ -17,7 +17,11 @@
         1.45
     ],
     "keyframes": [
-        200,
-        500
-    ]
+        210,
+        1250
+    ],
+    "loop_amt": 10,
+    "loop_speed": 0.15,
+    "loop_amt_std_factor": 1.1,
+    "loop_speed_std_factor": 1.1
 }
