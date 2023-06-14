@@ -1,8 +1,8 @@
 {
     "position_offset": [
-        0.4,
+        0.2,
         1.0,
-        -0.7
+        -0.9
     ],
     "scale": 1.0,
     "orientation_quat": [
@@ -13,13 +13,14 @@
     ],
     "pointing_hand": "right",
     "target_pos": [
-        0.5,
-        0.5
+        0.35,
+        0.55
     ],
-    "keyframes": [
-        100,
-        120,
-        140,
-        160
-    ]
+    "phases": {
+        "approach": [0, 230],
+        "wait": [230, 320],
+        "lure": [400, 780],
+        "decelerate": [810, 1200],
+        "retreat": [1500, -1]
+    }
 }
