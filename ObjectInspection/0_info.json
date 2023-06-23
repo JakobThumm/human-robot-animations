@@ -20,16 +20,16 @@
         210,
         1250
     ],
-    "loop_amts": [
+    "loop_amplitudes": [
         10.0,
         4.1,
-        7,7
+        7.7
     ],
     "loop_speeds": [
         0.15,
         0.21,
         0.0165
     ],
-    "loop_amt_std_factor": 1.1,
+    "loop_amplitude_std_factor": 1.1,
     "loop_speed_std_factor": 1.1
 }
