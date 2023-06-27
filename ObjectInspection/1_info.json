@@ -20,7 +20,7 @@
         210,
         1300
     ],
-    "loop_amts": [
+    "loop_amplitudes": [
         8.0,
         3.2,
         6.16
@@ -30,6 +30,6 @@
         0.14,
         0.011
     ],
-    "loop_amt_std_factor": 1.1,
+    "loop_amplitude_std_factor": 1.1,
     "loop_speed_std_factor": 1.1
 }
