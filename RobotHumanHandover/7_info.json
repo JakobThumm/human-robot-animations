@@ -11,10 +11,10 @@
         0.0,
         0.0
     ],
-    "object_holding_hand": "right",
-    "keyframes": [380, 790],
+    "object_holding_hand": "left",
+    "keyframes": [300, 830],
     "loop_amplitudes": [
-            190,
+            250,
             0.7
     ],
     "loop_speeds": [
