@@ -1,8 +1,8 @@
 {
     "position_offset": [
-        0.4,
+        -0.5,
         0.9,
-        -1.0
+        -0.9
     ],
     "scale": 1.0,
     "orientation_quat": [
@@ -11,11 +11,14 @@
         0.0,
         0.0
     ],
-    "object_holding_hand": "left",
-    "keyframes": [220, 400],
+    "object_holding_hand": "right",
+    "keyframes": [
+        350,
+        960
+    ],
     "loop_amplitudes": {
         "present": [
-            90,
+            270,
             0.7
         ],
         "wait": [
