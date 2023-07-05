@@ -12,9 +12,9 @@
         0.0
     ],
     "object_holding_hand": "right",
-    "keyframes": [350, 960],
+    "keyframes": [780, 1120],
     "loop_amplitudes": [
-            270,
+            170,
             0.7
     ],
     "loop_speeds": [
