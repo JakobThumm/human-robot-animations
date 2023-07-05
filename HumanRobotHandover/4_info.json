@@ -14,7 +14,7 @@
     "object_holding_hand": "right",
     "keyframes": [
         270,
-        750
+        700
     ],
     "loop_amplitudes": {
         "present": [
