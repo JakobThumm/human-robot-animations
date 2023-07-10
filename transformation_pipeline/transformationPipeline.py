@@ -47,7 +47,10 @@ def postprocessCSV(directory, verbose):
     if CONFIG_YAML.postprocessing is not None:
         postprocessing_config = CONFIG_YAML.postprocessing
     else:
-        print("No postprocessing config found in config.yaml, using default config, see postprocess_data.py for details.")
+        print(
+            "No postprocessing config found in config.yaml, using default config"
+            "see postprocess_data.py for details."
+        )
         postprocessing_config = None
 
     try:
@@ -98,13 +101,16 @@ def convertToMujoco(directory, verbose):
 
 
 if __name__ == "__main__":
-
     import argparse
     parser = argparse.ArgumentParser(description='Data augmentation')
     parser.add_argument('--directory', type=str, help='Directory that contains the CSV vicon animations and the T-pose')
     parser.add_argument('--toBVH', action='store_true', help='Convert the CSV files into BVH files')
     parser.add_argument('--toMujoco', action='store_true', help='Convert the CSV files into Mujoco files')
-    parser.add_argument('--postprocess', action='store_true', help='Postprocess missing values and smoothen with rolling median')
+    parser.add_argument(
+        '--postprocess',
+        action='store_true',
+        help='Postprocess missing values and smoothen with rolling median'
+    )
     parser.add_argument('--verbose', action='store_true', help='Use this argument to print to the console.')
     args = parser.parse_args()
 

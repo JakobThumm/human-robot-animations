@@ -9,9 +9,9 @@ Contributors:
     Julian Balletshofer
 Changelog:
     2.5.22 JT Formatted docstrings
-    11.6.22 changed the way angles are red and safed to be conform with the simulation - 
+    11.6.22 changed the way angles are red and safed to be conform with the simulation -
     now from zxy to xyz since assumption that mujoco assumes xyz
-    23.6.22 added try and except 
+    23.6.22 added try and except
     23.6.22 created function for pipeline + added outpath
 """
 import argparse
@@ -29,7 +29,7 @@ def convert_to_mujoco(path, output):
     assert os.path.isfile(path), "BVH file does not exist!"
     # else:
     # split .bvh away
-    output= output.rsplit('.', 1)[0]
+    output = output.rsplit('.', 1)[0]
     # create new save_path
     save_path = output + ".pkl"
 
@@ -70,11 +70,10 @@ def convert_to_mujoco(path, output):
     base_idx = mocap.get_joint_channels_index("hip")
     for (i, channel_name) in enumerate(mocap.joint_channels("hip")):
         channel_dict[channel_name] = base_idx + i
-    #check if motion lines are empty - could sometimes happen
-    #if they are empty you can't access them with frames[:,channel_dict["Xposition"]]
-    #only safes working files into mujoco folder
+    # check if motion lines are empty - could sometimes happen
+    # if they are empty you can't access them with frames[:,channel_dict["Xposition"]]
+    # only safes working files into mujoco folder
     try:
-        
         data["Pelvis_pos_y"] = frames[:, channel_dict["Yposition"]] / 1000
         # issue: human walked into wrong direction
         # transformation to align with mujoco
@@ -83,7 +82,7 @@ def convert_to_mujoco(path, output):
         data["Pelvis_pos_z"] = -frames[:, channel_dict["Zposition"]] / 1000
         data["Pelvis_pos_x"] = -frames[:, channel_dict["Xposition"]] / 1000
 
-        #switched x,y since human rotated around the wrong axes
+        # switched x,y since human rotated around the wrong axes
         rot = Rotation.from_euler(
              "ZYX",
              np.swapaxes(
@@ -92,9 +91,9 @@ def convert_to_mujoco(path, output):
                         # issue: rotaitons were around the wrong axes + wrong direction
                         # switch x and y axes for right rotation axes
                         # negation since animation rotated in wrong direction
-                         frames[:, channel_dict["Zrotation"]],
-                         frames[:, channel_dict["Xrotation"]],
-                         -frames[:, channel_dict["Yrotation"]],
+                        frames[:, channel_dict["Zrotation"]],
+                        frames[:, channel_dict["Xrotation"]],
+                        -frames[:, channel_dict["Yrotation"]],
                      ]
                  ),
                  0,
@@ -123,14 +122,14 @@ def convert_to_mujoco(path, output):
                     x_rot = -frames[j, channel_dict["Xrotation"]]
                     y_rot = frames[j, channel_dict["Yrotation"]]
                     z_rot = -frames[j, channel_dict["Zrotation"]]
-                    
-                    rot_zxy = Rotation.from_euler('zxy',[z_rot,x_rot,y_rot], degrees=True)
 
-                    rot_xyz = rot_zxy.as_euler('xyz',degrees=True)
+                    rot_zxy = Rotation.from_euler('zxy', [z_rot, x_rot, y_rot], degrees=True)
 
-                    frames[j, channel_dict["Xrotation"]]=rot_xyz[0]
-                    frames[j, channel_dict["Yrotation"]]=rot_xyz[1]
-                    frames[j, channel_dict["Zrotation"]]=rot_xyz[2]
+                    rot_xyz = rot_zxy.as_euler('xyz', degrees=True)
+
+                    frames[j, channel_dict["Xrotation"]] = rot_xyz[0]
+                    frames[j, channel_dict["Yrotation"]] = rot_xyz[1]
+                    frames[j, channel_dict["Zrotation"]] = rot_xyz[2]
 
                 data[joint_name + "_x"] = np.clip(
                     np.radians(frames[:, channel_dict["Xrotation"]]), -1.56, 1.56
@@ -152,7 +151,7 @@ def convert_to_mujoco(path, output):
         output.close()
     except:
         print("this following files has no motion lines " + file_name)
-    
+
 
 if __name__ == "__main__":
     # << Load in arguments >>
@@ -168,4 +167,3 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     path = args.path
-

@@ -135,11 +135,11 @@ def estimate_rotation_between_joints(t_pose_dir_vecs, base_t_pose_rotation,
             # gives position of point in the coordinate system of the parent
             c_pos = current_frame.JOINT_VALUES[child_l].global_pos
             # make transformation to transform it into coord frame of parent joint instead of the vicon frame
-            #f.e. elbow hand => hand pos relative to elbow 
+            # f.e. elbow hand => hand pos relative to elbow
             p_frame_actual_child_pos = _apply_transformation_to_pos(rot_0_to_parent,
                                                                     transl_0_to_parent,
                                                                     c_pos)
-            #unit vector to calculate the rotation between the 2 joints
+            # unit vector to calculate the rotation between the 2 joints
             p_frame_actual_dir = p_frame_actual_child_pos / np.linalg.norm(p_frame_actual_child_pos)
 
             p_frame_should_dir = t_pose_dir_vecs[parent_child_key]
@@ -161,7 +161,6 @@ def estimate_rotation_between_joints(t_pose_dir_vecs, base_t_pose_rotation,
 
     rec_estimation(first_parent_l, rot_0_to_1, transl_0_to_1)
 
-    
     return rotations
 
 

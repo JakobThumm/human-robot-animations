@@ -5,7 +5,6 @@ contributors: Marc Gavilán Gil, Julian Balletshofer, Simon Dobers
 """
 import yaml
 import sys
-import numpy as np
 import os
 
 
@@ -28,7 +27,7 @@ class Configuration:
         self.BONE_BEGIN_AT_JOINT = config_parser['BONE_BEGIN_AT_JOINT']
         self.BONE_END_AT_JOINT = config_parser['BONE_END_AT_JOINT']
 
-        try : 
+        try:
             self.postprocessing = config_parser['postprocessing']
         except KeyError:
             self.postprocessing = None
@@ -51,6 +50,6 @@ def read_configfile(filename):
 
 conf_filename = os.getenv('MOT_TRANS_CONF_FILE')
 if conf_filename is None:
-    #sets default
+    # sets default
     conf_filename = os.path.dirname(os.path.realpath(__file__)) + "/config.yaml"
 CONFIG_YAML = read_configfile(conf_filename)

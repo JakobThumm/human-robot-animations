@@ -41,7 +41,7 @@ def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
         return positions
 
     def estimate_offsets(positions, parent_bone_label, parent_begin):
-        #calc how joints are relative to root
+        # calc how joints are relative to root
         offsets = {}
         base_bone_label = CONFIG_YAML.ROOT_BONE
         if parent_bone_label == base_bone_label:
@@ -52,7 +52,7 @@ def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
 
         for child_bone_l in CONFIG_YAML.BONE_HIERARCHY[parent_bone_label]:
             child_begin = positions[CONFIG_YAML.BONE_BEGIN_AT_JOINT[child_bone_l]]
-            #just x,y,z substracted
+            # just x,y,z substracted
             offset = child_begin - parent_begin
             offsets[child_bone_l+'_x'] = offset[0]
             offsets[child_bone_l+'_y'] = offset[1]
@@ -60,7 +60,7 @@ def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
             child_offsets = estimate_offsets(positions, child_bone_l, child_begin)
             offsets.update(child_offsets)
         return offsets
-    #start recursive estimation
+    # start recursive estimation
     positions_with_dists = estimate_positions_with_new_dists(CONFIG_YAML.ROOT_JOINT, None)
     bones_offsets = estimate_offsets(positions_with_dists, CONFIG_YAML.ROOT_BONE, None)
 
@@ -68,7 +68,7 @@ def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
         lines = []
 
         def _rec_est(parent_l, depth):
-            
+
             for current_l in CONFIG_YAML.BONE_HIERARCHY[parent_l]:
                 if current_l.endswith('_end'):
                     bone_bvh_name = CONFIG_YAML.BONE_END_BVH_NAME[current_l]
@@ -84,7 +84,7 @@ def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
                     offsets_dict[current_l + '_z']
 
                 ))
-                lines.append('  ' * depth + f'CHANNELS 3 Zrotation Xrotation Yrotation')
+                lines.append('  ' * depth + 'CHANNELS 3 Zrotation Xrotation Yrotation')
                 if current_l.endswith('_end'):
                     lines.append('  ' * depth + 'End Site')
                     lines.append('  ' * depth + '{')
@@ -239,6 +239,7 @@ def main(input_file, t_pose_file, verbose=False):
     )
     create_bvh_file(info, measured_t_pose_dirs, measured_inter_joints_dists, measured_base_t_pose_angle,
                     filename=output_file)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert Vicon CSV file to BVH file')

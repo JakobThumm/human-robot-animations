@@ -3,6 +3,8 @@
 author: Marc Gavilán Gil
 contributors:Julian Balletshofer, Simon Dobers
 """
+
+
 def renameCSVelements(csvFile, renameDictionary):
     new_file_content = ""
     with open(csvFile, 'r') as csvfile:
@@ -21,19 +23,21 @@ def renameCSVelements(csvFile, renameDictionary):
                 new_file_content += line
     with open(csvFile, 'w') as csvfile:
         csvfile.write(new_file_content)
-#rename dic adjusted for our current names in the csv files
+
+
+# rename dic adjusted for our current names in the csv files
 renameDictionary = {
-        "Collar":"collar",
-        "Head" : "head",
-        "LElbow":"left_elbow",
-        "LHand":"left_hand",
-        "LShoulder":"left_shoulder",
-        "RElbow":"right_elbow",
-        "RHand":"right_hand",
-        "RShoulder":"right_shoulder",
-        "Torso":"hip",
-        "knee_left_2910":"collar",
-        "knee_l_2911" : "collar"
+        "Collar": "collar",
+        "Head": "head",
+        "LElbow": "left_elbow",
+        "LHand": "left_hand",
+        "LShoulder": "left_shoulder",
+        "RElbow": "right_elbow",
+        "RHand": "right_hand",
+        "RShoulder": "right_shoulder",
+        "Torso": "hip",
+        "knee_left_2910": "collar",
+        "knee_l_2911": "collar"
     }
 
 if __name__ == '__main__':
