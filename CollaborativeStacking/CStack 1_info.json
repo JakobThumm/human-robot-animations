@@ -19,9 +19,11 @@
         1350,
         1500
     ],
+    "wait_for_second_anchor": 750,
+    "wait_for_fourth_anchor": 1450,
     "loop_amplitudes": {
         "wait_for_second": [
-            270,
+            80,
             0.7
         ],
         "wait_for_fourth": [
