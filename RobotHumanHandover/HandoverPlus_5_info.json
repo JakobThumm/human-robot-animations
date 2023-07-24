@@ -14,7 +14,7 @@
     "object_holding_hand": "left",
     "keyframes": [430, 600],
     "loop_amplitudes": [
-            450,
+            70,
             0.7
     ],
     "loop_speeds": [

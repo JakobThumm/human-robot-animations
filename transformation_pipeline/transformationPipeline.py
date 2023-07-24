@@ -79,6 +79,8 @@ def postprocessCSV(directory, verbose):
 
 
 def convertToMujoco(directory, verbose):
+    assert os.path.exists(directory), "Directory does not exist!"
+
     if verbose:
         iterable = tqdm(os.walk(directory), desc="Converting files to mujoco usable format")
     else:
@@ -124,3 +126,5 @@ if __name__ == "__main__":
     if args.toMujoco:
         print("\n-------- Converting to .pkl (for Mujoco) -------\n")
         convertToMujoco(args.directory, args.verbose)
+
+    print("Done.")
