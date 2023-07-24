@@ -1,7 +1,7 @@
 {
     "position_offset": [
         -0.5,
-        0.9,
+        1.0,
         -0.5
     ],
     "scale": 1.0,
@@ -12,7 +12,7 @@
         0.0
     ],
     "object_holding_hand": "right",
-    "keyframes": [270, 1200],
+    "keyframes": [500, 710],
     "loop_amplitudes": [
             450,
             0.7
