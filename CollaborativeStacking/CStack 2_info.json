@@ -1,8 +1,8 @@
 {
     "position_offset": [
-        -0.9,
+        -0.8,
         0.9,
-        -0.4
+        -0.5
     ],
     "scale": 1.0,
     "orientation_quat": [
@@ -14,10 +14,10 @@
     "first_placing_hand": "right",
     "keyframes": [
         230,
-        420,
-        600,
-        1430,
-        1470
+        480,
+        620,
+        1220,
+        1580
     ],
     "loop_amplitudes": {
         "wait_for_second": [
@@ -25,20 +25,20 @@
             0.7
         ],
         "wait_for_fourth": [
-            10,
+            30,
             6.3,
             2.4
         ]
     },
     "loop_speeds": {
         "wait_for_second": [
-            0.3,
-            1.1
+            0.4,
+            0.3
         ],
         "wait_for_fourth": [
-            0.12,
             0.07,
-            0.034
+            0.034,
+            0.02
         ]
     },
     "loop_amplitude_std_factor": 1.1,
