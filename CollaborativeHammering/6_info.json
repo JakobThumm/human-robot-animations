@@ -1,8 +1,8 @@
 {
     "position_offset": [
-        0.4,
+        -0.8,
         1.0,
-        -0.7
+        -0.5
     ],
     "scale": 1.0,
     "orientation_quat": [
@@ -12,7 +12,17 @@
         0.0
     ],
     "keyframes": [
-        100,
-        500
-    ]
+        370,
+        1120
+    ],
+    "loop_amplitudes": [
+        300,
+        0.6
+    ],
+    "loop_speeds": [
+        1,
+        2.6
+    ],
+    "loop_amplitude_std_factor": 1.1,
+    "loop_speed_std_factor": 1.1
 }

@@ -1,6 +1,6 @@
 {
     "position_offset": [
-        0.4,
+        0.0,
         1.0,
         -0.7
     ],
@@ -12,7 +12,17 @@
         0.0
     ],
     "keyframes": [
-        100,
-        500
-    ]
+        600,
+        1000
+    ],
+    "loop_amplitudes": [
+        200,
+        0.6
+    ],
+    "loop_speeds": [
+        1,
+        2.6
+    ],
+    "loop_amplitude_std_factor": 1.1,
+    "loop_speed_std_factor": 1.1
 }

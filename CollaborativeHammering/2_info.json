@@ -12,11 +12,11 @@
         0.0
     ],
     "keyframes": [
-        350,
-        550
+        400,
+        620
     ],
     "loop_amplitudes": [
-        200,
+        80,
         0.6
     ],
     "loop_speeds": [
