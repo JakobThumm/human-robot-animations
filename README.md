@@ -41,6 +41,8 @@ We work on Ubuntu 20.04. If you want to participate, you need to run this versio
 
     `--toMujoco` (convert BVH to mujoco usable format)
 
+    `--toPointAnimation` (convert CSV to a point movement file format)
+
 The pipeline creates an extra folder called **mujoco** for the mujoco usable files (.pkl)
 
 Please make sure you have a file `tPose*.csv` present in the folder containing the other `.csv` files you would like to convert. It should contain data of a human performing a t-Pose. We use only the first frame of this file in the transformation pipeline. Make sure all markers are visible in that frame!

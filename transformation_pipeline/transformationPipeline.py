@@ -7,6 +7,7 @@ contributors: Simon Dobers
 from tqdm import tqdm
 import os
 from motion_capture.converters.viconCSV_to_bvh import main as CSV_to_BVH
+from motion_capture.converters.viconCSV_to_point_animation import main as CSV_to_PointAnimation
 from motion_capture.help_scripts.postprocess_data import postprocess
 from motion_capture.help_scripts.renameCSVitems import renameCSVelements, renameDictionary
 from motion_capture.converters.convert_bvh import convert_to_mujoco
@@ -39,6 +40,24 @@ def convertToBVH(directory, verbose):
                 if filename != tPoseFilename:
                     file_with_path = os.path.join(path_to_file, filename)
                     CSV_to_BVH(file_with_path, tPose, verbose)
+
+
+def convertToPointAnimation(directory, verbose):
+    if verbose:
+        iterable = tqdm(os.walk(directory), desc="Converting files to BVH")
+    else:
+        iterable = os.walk(directory)
+    # create sub directory for point animations
+    point_animation_path = os.path.join(directory, "point_animations")
+    if not os.path.exists(point_animation_path):
+        os.mkdir(point_animation_path)
+    for (path_to_file, _, filenames) in iterable:
+        for filename in filenames:
+            if filename.endswith(".csv"):
+                if verbose:
+                    print("\n--------" + filename + "--------\n")
+                file_with_path = os.path.join(path_to_file, filename)
+                CSV_to_PointAnimation(file_with_path, point_animation_path, verbose)
 
 
 def postprocessCSV(directory, verbose):
@@ -108,6 +127,7 @@ if __name__ == "__main__":
     parser.add_argument('--directory', type=str, help='Directory that contains the CSV vicon animations and the T-pose')
     parser.add_argument('--toBVH', action='store_true', help='Convert the CSV files into BVH files')
     parser.add_argument('--toMujoco', action='store_true', help='Convert the CSV files into Mujoco files')
+    parser.add_argument('--toPointAnimation', action='store_true', help='Convert the CSV files into point movement files')
     parser.add_argument(
         '--postprocess',
         action='store_true',
@@ -119,6 +139,7 @@ if __name__ == "__main__":
     if args.postprocess:
         print("\n-------- Postprocessing .csv files -------\n")
         postprocessCSV(args.directory, args.verbose)
+        args.directory = os.path.join(args.directory, "postprocessed")
 
     if args.toBVH:
         convertToBVH(args.directory, args.verbose)
@@ -126,5 +147,9 @@ if __name__ == "__main__":
     if args.toMujoco:
         print("\n-------- Converting to .pkl (for Mujoco) -------\n")
         convertToMujoco(args.directory, args.verbose)
+
+    if args.toPointAnimation:
+        print("\n-------- Converting to .pkl (for Point Animation) -------\n")
+        convertToPointAnimation(args.directory, args.verbose)
 
     print("Done.")
