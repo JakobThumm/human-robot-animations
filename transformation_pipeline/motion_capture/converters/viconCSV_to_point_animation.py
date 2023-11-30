@@ -12,8 +12,8 @@ from motion_capture.help_scripts.angle_estimation import estimate_rotation_betwe
 from motion_capture.readers.readViconCSV import get_first_frame, frames_joint_information, estimate_t_pose_info
 from motion_capture.config_util import CONFIG_YAML
 
-# Measurements are given in cm. We want to convert them to meters.
-UNIT_TRANSFORMATION = 0.01
+# Measurements are given in mm. We want to convert them to meters.
+UNIT_TRANSFORMATION = 0.001
 
 
 def main(input_file, output_folder, verbose=False):
