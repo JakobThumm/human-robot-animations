@@ -44,3 +44,13 @@ We work on Ubuntu 20.04. If you want to participate, you need to run this versio
 The pipeline creates an extra folder called **mujoco** for the mujoco usable files (.pkl)
 
 Please make sure you have a file `tPose*.csv` present in the folder containing the other `.csv` files you would like to convert. It should contain data of a human performing a t-Pose. We use only the first frame of this file in the transformation pipeline. Make sure all markers are visible in that frame!
+
+
+## Lara
+Use the following command:
+```MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml python transformationPipeline.py --directory <PATH_OF_LARA_DIR> --toBVH --sameFileAsTpose```
+
+Explanation:
+- Set the config file with `MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml`, otherwiese `motion_capture/config.yaml` will be used
+- `--directory <PATH_OF_LARA_DIR>` set the directory that stores the Lara CSV's
+- `--sameFileAsTpose` use the first frame as Tpose. Important since Lara does not have seperate T-pose files

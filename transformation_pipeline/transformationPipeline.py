@@ -13,7 +13,7 @@ from motion_capture.converters.convert_bvh import convert_to_mujoco
 from motion_capture.config_util import CONFIG_YAML
 
 
-def convertToBVH(directory, verbose):
+def convertToBVH(directory, use_first_frame_as_tpose, verbose):
     # Search for tPose file in directory
     # ToDo: check if tPose is fine else warning
     tPose = None
@@ -38,7 +38,7 @@ def convertToBVH(directory, verbose):
                     print("\n--------" + filename + "--------\n")
                 if filename != tPoseFilename:
                     file_with_path = os.path.join(path_to_file, filename)
-                    CSV_to_BVH(file_with_path, tPose, verbose)
+                    CSV_to_BVH(file_with_path, use_first_frame_as_tpose, verbose)
 
 
 def postprocessCSV(directory, verbose):
@@ -107,6 +107,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Data augmentation')
     parser.add_argument('--directory', type=str, help='Directory that contains the CSV vicon animations and the T-pose')
     parser.add_argument('--toBVH', action='store_true', help='Convert the CSV files into BVH files')
+    parser.add_argument('--sameFileAsTpose', action='store_true', help='Do not use a separate T-pose file, but instead use the first frame as T-pose')
     parser.add_argument('--toMujoco', action='store_true', help='Convert the CSV files into Mujoco files')
     parser.add_argument(
         '--postprocess',
@@ -121,7 +122,7 @@ if __name__ == "__main__":
         postprocessCSV(args.directory, args.verbose)
 
     if args.toBVH:
-        convertToBVH(args.directory, args.verbose)
+        convertToBVH(args.directory, args.sameFileAsTpose, args.verbose)
 
     if args.toMujoco:
         print("\n-------- Converting to .pkl (for Mujoco) -------\n")

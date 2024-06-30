@@ -1,18 +1,20 @@
 
 JOINTS_HIERARCHY:
-  'ROOT': ["hip"]
-  'hip': ["collar"]
-  'collar': [ "head", "left_shoulder", "right_shoulder" ]
-  'head': []
-  'left_shoulder': [ "left_elbow" ]
-  'left_elbow': [ "left_hand" ]
-  'right_shoulder': [ "right_elbow" ]
-  'right_elbow': [ "right_hand" ]
-  'right_hand': []
-  'left_hand': []
+  'ROOT': ["Root"]
+  'Root': ["L_Collar"]
+  # 'LowerBack': ["L_Collar"]
+  'Head': []
 
+  'L_Collar': ["Head", "L_Humerus", "R_Humerus" ]
+  'L_Humerus': ["L_Elbow"]
+  'L_Elbow': ["L_Wrist"]
+  'L_Wrist': []
 
-ROOT_JOINT: 'hip'
+  'R_Humerus': [ "R_Elbow" ]
+  'R_Elbow': [ "R_Wrist" ]
+  'R_Wrist': []
+
+ROOT_JOINT: 'Root'
 
 BONE_HIERARCHY:
   'hip': ['torso']
@@ -36,42 +38,44 @@ BONE_END_BVH_NAME:
 ROOT_BONE: 'hip'
 
 BONE_BEGIN_AT_JOINT:
-  'hip': 'hip'
-  'torso': 'hip'
-  'neck': 'collar'
-  'neck_end': 'head'
-  'left_collar': 'collar'
-  'left_upper_arm': 'left_shoulder'
-  'left_forearm': 'left_elbow'
-  'left_forearm_end': 'left_hand'
-  'right_collar': 'collar'
-  'right_upper_arm': 'right_shoulder'
-  'right_forearm':  'right_elbow'
-  'right_forearm_end': 'right_hand'
+  'hip': 'Root'
+  'torso': 'Root'
+  'neck': 'L_Collar'
+  'neck_end': 'Head'
+  'left_collar': 'L_Collar'
+  'left_upper_arm': 'L_Humerus'
+  'left_forearm': 'L_Elbow'
+  'left_forearm_end': 'L_Wrist'
+  'right_collar': 'L_Collar'
+  'right_upper_arm': 'R_Humerus'
+  'right_forearm':  'R_Elbow'
+  'right_forearm_end': 'R_Wrist'
 
 BONE_END_AT_JOINT:
-  'hip': 'hip'
-  'torso': 'collar'
-  'neck': 'head'
+  'hip': 'Root'
+  'torso': 'L_Collar'
+  'neck': 'Head'
   'neck_end': ''
-  'left_collar': 'left_shoulder'
-  'left_upper_arm': 'left_elbow'
-  'left_forearm': 'left_hand'
+  'left_collar': 'L_Humerus'
+  'left_upper_arm': 'L_Elbow'
+  'left_forearm': 'L_Wrist'
   'left_forearm_end': ''
-  'right_collar': 'right_shoulder'
-  'right_upper_arm': 'right_elbow'
-  'right_forearm': 'right_hand'
+  'right_collar': 'R_Humerus'
+  'right_upper_arm': 'R_Elbow'
+  'right_forearm': 'R_Wrist'
   'right_forearm_end': ''
 
-ROTATION_IN_DEGREE: false
+ROTATION_IN_DEGREE: true
 
-INIT_TRANSFORMATION_YZ: false
+ROTATION_IN_DEGREE: true
 
-READER: "Vicon"
+INIT_TRANSFORMATION_YZ: true
+
+READER: "Lara"
 
 FPS: 100
 
-joint_name_pattern_csv: 'Global Angle (\w+)'
+joint_name_pattern_csv: 'Subject(\w+)'
 
 # postprocessing config, see defautl config in transformation pipeline.py to check which values must be provided
 postprocessing : 

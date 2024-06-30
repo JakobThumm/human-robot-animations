@@ -19,7 +19,7 @@ def calc_rotation_between(dir_vec_from, dir_vec_to):
         rot (Rotation of scipy)
     """
     assert np.abs(np.linalg.norm(dir_vec_from) - 1.0) < 1e-1, "the norm is {}".format(np.linalg.norm(dir_vec_from))
-    assert np.abs(np.linalg.norm(dir_vec_from) - 1.0) < 1e-1, "the norm is {}".format(np.linalg.norm(dir_vec_to))
+    assert np.abs(np.linalg.norm(dir_vec_to) - 1.0) < 1e-1, "the norm is {}".format(np.linalg.norm(dir_vec_to))
     if np.allclose(dir_vec_from, dir_vec_to):
         return Rotation.from_rotvec(np.array([0.0, 0.0, 0.0]))
 

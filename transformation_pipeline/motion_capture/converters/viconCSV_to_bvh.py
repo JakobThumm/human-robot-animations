@@ -7,8 +7,14 @@ import argparse
 import numpy as np
 from motion_capture.help_scripts.angle_estimation import estimate_rotation_between_joints, \
     rotation_dict_to_angle_dict
-from motion_capture.readers.readViconCSV import get_first_frame, frames_joint_information, estimate_t_pose_info
 from motion_capture.config_util import CONFIG_YAML
+
+if CONFIG_YAML.READER == "Vicon":
+    from motion_capture.readers.readViconCSV import get_first_frame, frames_joint_information, estimate_t_pose_info
+elif CONFIG_YAML.READER == "Lara":
+    from motion_capture.readers.readLaraCSV import get_first_frame, frames_joint_information, estimate_t_pose_info
+else:
+    raise RuntimeError("No valid reader defined in the yaml config")
 
 
 def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
@@ -26,7 +32,7 @@ def create_bvh_hierarchy_str(t_pose_dirs, inter_joints_dists):
 
     def estimate_positions_with_new_dists(parent_label, parent_pos):
         positions = {}
-        base_bone_label = CONFIG_YAML.ROOT_BONE
+        base_bone_label = CONFIG_YAML.ROOT_JOINT
         if parent_label == base_bone_label:
             positions[base_bone_label] = np.array([0.0, 0.0, 0.0])
             parent_pos = np.array([0.0, 0.0, 0.0])
@@ -173,6 +179,8 @@ def estimate_motion_lines(frames_keys, frames_info, t_pose_dirs, base_t_pose_ang
         angles_dict = rotation_dict_to_angle_dict(rot_dict)
         angles_dict['dummy'] = 0.
         bvh_row_angles = [angles_dict[key] for key in order_angle_keys]
+        if CONFIG_YAML.INIT_TRANSFORMATION_YZ:
+            bvh_row_angles[1], bvh_row_angles[2] = bvh_row_angles[2], bvh_row_angles[1]
         pos_dict = joint_position_dict_per_frame[i]
         bvh_row_pos = [pos_dict[CONFIG_YAML.ROOT_JOINT][i] for i in [0, 1, 2]]
         bvh_row = bvh_row_pos + bvh_row_angles
@@ -208,6 +216,7 @@ def create_bvh_file(frames_info, t_pose_dirs, inter_joints_dists, base_t_pose_an
     frames_keys.sort(key=int)
 
     lines = estimate_motion_lines(frames_keys, frames_info, t_pose_dirs, base_t_pose_angle)
+    # assert len(lines[0].split(" ")) == 39  # 3*number joints
     with open(filename, 'w', newline='') as file_handle:
         file_handle.write(hierarchy_str)
         file_handle.write('\n')
@@ -217,7 +226,7 @@ def create_bvh_file(frames_info, t_pose_dirs, inter_joints_dists, base_t_pose_an
         file_handle.write('\n'.join(lines))
 
 
-def main(input_file, t_pose_file, verbose=False):
+def main(input_file, t_pose_file, use_first_frame_as_tpose=False, verbose=False):
     """
     Transforms the animations recordings into bvh file format.
     Additionally, it creates a json file containing the parameters that will be needed for editing the motion
@@ -228,9 +237,11 @@ def main(input_file, t_pose_file, verbose=False):
     """
     output_file = input_file.replace('.csv', '.bvh')
     info = frames_joint_information(input_file, verbose)
-    t_pose_info = frames_joint_information(t_pose_file, verbose)
-    first_t_pose_info = get_first_frame(frames_info=t_pose_info)
-
+    if use_first_frame_as_tpose:
+        first_t_pose_info = get_first_frame(frames_info=info)
+    else:
+        t_pose_info = frames_joint_information(t_pose_file, verbose)
+        first_t_pose_info = get_first_frame(frames_info=t_pose_info)
     # parameters according to the recordings
     measured_inter_joints_dists, measured_t_pose_dirs, measured_base_t_pose_angle = estimate_t_pose_info(
         CONFIG_YAML.JOINTS_HIERARCHY,
