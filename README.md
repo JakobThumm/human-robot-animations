@@ -48,9 +48,10 @@ Please make sure you have a file `tPose*.csv` present in the folder containing t
 
 ## Lara
 Use the following command:
-```MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml python transformationPipeline.py --directory <PATH_OF_LARA_DIR> --toBVH --sameFileAsTpose```
+```MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml python transformationPipeline.py --directory <PATH_OF_LARA_DIR> --toBVH --sameFileAsTpose --multithreaded```
 
 Explanation:
 - Set the config file with `MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml`, otherwiese `motion_capture/config.yaml` will be used
 - `--directory <PATH_OF_LARA_DIR>` set the directory that stores the Lara CSV's
 - `--sameFileAsTpose` use the first frame as Tpose. Important since Lara does not have seperate T-pose files
+- `--multithreaded` Spawn multiple processes to convert the files in parallel.

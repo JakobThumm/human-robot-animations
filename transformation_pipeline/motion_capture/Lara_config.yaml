@@ -1,11 +1,11 @@
 
 JOINTS_HIERARCHY:
   'ROOT': ["Root"]
-  'Root': ["L_Collar"]
+  'Root': ["L_Collar", "L_Femur", "R_Femur"]
   # 'LowerBack': ["L_Collar"]
   'Head': []
-
   'L_Collar': ["Head", "L_Humerus", "R_Humerus" ]
+
   'L_Humerus': ["L_Elbow"]
   'L_Elbow': ["L_Wrist"]
   'L_Wrist': []
@@ -14,58 +14,98 @@ JOINTS_HIERARCHY:
   'R_Elbow': [ "R_Wrist" ]
   'R_Wrist': []
 
+  'L_Femur': [ "L_Tibia" ]
+  'L_Tibia': [ "L_Foot" ]
+  'L_Foot': [ ]
+  #'L_Toe': []
+
+  'R_Femur': [ "R_Tibia" ]
+  'R_Tibia': [ "R_Foot" ]
+  'R_Foot': []
+  #'R_Toe': []
+
+
 ROOT_JOINT: 'Root'
 
 BONE_HIERARCHY:
-  'hip': ['torso']
-  'torso': ['neck', 'left_collar', 'right_collar']
-  'neck': ['neck_end']
-  'neck_end': []
-  'left_collar': ['left_upper_arm']
-  'left_upper_arm': ['left_forearm']
-  'left_forearm': ['left_forearm_end']
-  'left_forearm_end': []
-  'right_collar': ['right_upper_arm']
-  'right_upper_arm': ['right_forearm']
-  'right_forearm': ['right_forearm_end']
-  'right_forearm_end': []
+  # https://research.cs.wisc.edu/graphics/Courses/cs-838-1999/Jeff/Example1.bvh
+  # https://research.cs.wisc.edu/graphics/Courses/cs-838-1999/Jeff/BVH.html
+  'Hips': ['Chest', 'LeftUpLeg', 'RightUpLeg']
+  'Chest': ['Neck', 'LeftCollar', 'RightCollar']
+  'Neck': ['Neck_end']
+  'Neck_end': []
+
+  'LeftCollar': ['LeftUpArm']
+  'LeftUpArm': ['LeftLowArm']
+  'LeftLowArm': ['LeftLowArm_end']
+  'LeftLowArm_end': []
+
+  'RightCollar': ['RightUpArm']
+  'RightUpArm': ['RightLowArm']
+  'RightLowArm': ['RightLowArm_end']
+  'RightLowArm_end': []
+
+  'LeftUpLeg': ['LeftLowLeg']
+  'LeftLowLeg': ['LeftFoot_end']
+  'LeftFoot_end': []
+
+  'RightUpLeg': ['RightLowLeg']
+  'RightLowLeg': ['RightFoot_end']
+  'RightFoot_end': []
+
 
 BONE_END_BVH_NAME:
-  'neck_end': 'head'
-  'left_forearm_end': 'left_hand'
-  'right_forearm_end': 'right_hand'
+  'Neck_end': 'Head'
+  'LeftLowArm_end': 'LeftHand'
+  'RightLowArm_end': 'RightHand'
+  'LeftFoot_end': 'LeftFoot'
+  'RightFoot_end': 'RightFoot'
 
-ROOT_BONE: 'hip'
+ROOT_BONE: 'Hips'
 
 BONE_BEGIN_AT_JOINT:
-  'hip': 'Root'
-  'torso': 'Root'
-  'neck': 'L_Collar'
-  'neck_end': 'Head'
-  'left_collar': 'L_Collar'
-  'left_upper_arm': 'L_Humerus'
-  'left_forearm': 'L_Elbow'
-  'left_forearm_end': 'L_Wrist'
-  'right_collar': 'L_Collar'
-  'right_upper_arm': 'R_Humerus'
-  'right_forearm':  'R_Elbow'
-  'right_forearm_end': 'R_Wrist'
+  'Hips': 'Root' # ROOT?
+  'Chest': 'Root'
+  'Neck': 'L_Collar'
+  'Neck_end': 'Head'
+  'LeftCollar': 'L_Collar'
+  'LeftUpArm': 'L_Humerus'
+  'LeftLowArm': 'L_Elbow'
+  'LeftLowArm_end': 'L_Wrist'
+  'RightCollar': 'L_Collar'
+  'RightUpArm': 'R_Humerus'
+  'RightLowArm':  'R_Elbow'
+  'RightLowArm_end': 'R_Wrist'
+
+  'LeftUpLeg': 'Root' # L_Femur ?
+  'LeftLowLeg': 'L_Femur' #  L_Tibia ?
+  'LeftFoot_end': 'L_Tibia' # L_Foot ?
+
+  'RightUpLeg': 'Root'
+  'RightLowLeg': 'R_Femur'
+  'RightFoot_end': 'R_Tibia'
 
 BONE_END_AT_JOINT:
-  'hip': 'Root'
-  'torso': 'L_Collar'
-  'neck': 'Head'
-  'neck_end': ''
-  'left_collar': 'L_Humerus'
-  'left_upper_arm': 'L_Elbow'
-  'left_forearm': 'L_Wrist'
-  'left_forearm_end': ''
-  'right_collar': 'R_Humerus'
-  'right_upper_arm': 'R_Elbow'
-  'right_forearm': 'R_Wrist'
-  'right_forearm_end': ''
+  'Hips': 'Root'
+  'Chest': 'L_Collar'
+  'Neck': 'Head'
+  'Neck_end': ''
+  'LeftCollar': 'L_Humerus'
+  'LeftUpArm': 'L_Elbow'
+  'LeftLowArm': 'L_Wrist'
+  'LeftLowArm_end': ''
+  'RightCollar': 'R_Humerus'
+  'RightUpArm': 'R_Elbow'
+  'RightLowArm': 'R_Wrist'
+  'RightLowArm_end': ''
 
-ROTATION_IN_DEGREE: true
+  'LeftUpLeg': 'L_Femur' # L_Tibia?
+  'LeftLowLeg': 'L_Tibia' # L_Foot?
+  'LeftFoot_end': ''
+
+  'RightUpLeg': 'R_Femur'
+  'RightLowLeg': 'R_Tibia'
+  'RightFoot_end': ''
 
 ROTATION_IN_DEGREE: true
 

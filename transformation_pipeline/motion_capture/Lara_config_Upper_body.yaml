@@ -1,0 +1,89 @@
+
+JOINTS_HIERARCHY:
+  'ROOT': ["Root"]
+  'Root': ["L_Collar"]
+  # 'LowerBack': ["L_Collar"]
+  'Head': []
+
+  'L_Collar': ["Head", "L_Humerus", "R_Humerus" ]
+  'L_Humerus': ["L_Elbow"]
+  'L_Elbow': ["L_Wrist"]
+  'L_Wrist': []
+
+  'R_Humerus': [ "R_Elbow" ]
+  'R_Elbow': [ "R_Wrist" ]
+  'R_Wrist': []
+
+ROOT_JOINT: 'Root'
+
+BONE_HIERARCHY:
+  'hip': ['torso']
+  'torso': ['neck', 'left_collar', 'right_collar']
+  'neck': ['neck_end']
+  'neck_end': []
+  'left_collar': ['left_upper_arm']
+  'left_upper_arm': ['left_forearm']
+  'left_forearm': ['left_forearm_end']
+  'left_forearm_end': []
+  'right_collar': ['right_upper_arm']
+  'right_upper_arm': ['right_forearm']
+  'right_forearm': ['right_forearm_end']
+  'right_forearm_end': []
+
+BONE_END_BVH_NAME:
+  'neck_end': 'head'
+  'left_forearm_end': 'left_hand'
+  'right_forearm_end': 'right_hand'
+
+ROOT_BONE: 'hip'
+
+BONE_BEGIN_AT_JOINT:
+  'hip': 'Root'
+  'torso': 'Root'
+  'neck': 'L_Collar'
+  'neck_end': 'Head'
+  'left_collar': 'L_Collar'
+  'left_upper_arm': 'L_Humerus'
+  'left_forearm': 'L_Elbow'
+  'left_forearm_end': 'L_Wrist'
+  'right_collar': 'L_Collar'
+  'right_upper_arm': 'R_Humerus'
+  'right_forearm':  'R_Elbow'
+  'right_forearm_end': 'R_Wrist'
+
+BONE_END_AT_JOINT:
+  'hip': 'Root'
+  'torso': 'L_Collar'
+  'neck': 'Head'
+  'neck_end': ''
+  'left_collar': 'L_Humerus'
+  'left_upper_arm': 'L_Elbow'
+  'left_forearm': 'L_Wrist'
+  'left_forearm_end': ''
+  'right_collar': 'R_Humerus'
+  'right_upper_arm': 'R_Elbow'
+  'right_forearm': 'R_Wrist'
+  'right_forearm_end': ''
+
+ROTATION_IN_DEGREE: true
+
+INIT_TRANSFORMATION_YZ: true
+
+READER: "Lara"
+
+FPS: 100
+
+joint_name_pattern_csv: 'Subject(\w+)'
+
+# postprocessing config, see defautl config in transformation pipeline.py to check which values must be provided
+postprocessing : 
+  'fps': 100
+  'median_filter' : true
+  'interpolation_type' : 'polynomial'     # polynomial or linear
+  'polynomial_degree' : 2                 # ignored if filter_type is 'linear'
+  'median_window' : 10                    # size of window for moving median 
+  'lowpass_filter' : true
+  'lowpass_critical_frequency' : 3
+  'order_lowpass_filter' : 4
+  'use_bidirectional_filter' : true       # if set to yes, scipy sosfiltfilt will be used, otherwise sosfilt
+
