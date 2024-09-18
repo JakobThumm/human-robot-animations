@@ -28,11 +28,11 @@ def convertToBVH(directory, use_first_frame_as_tpose, verbose, multithreaded):
         if tPose:
             break
 
-    if verbose:
+    if verbose and not multithreaded:
         iterable = tqdm(os.walk(directory), desc="Converting files to BVH")
     else:
         iterable = os.walk(directory)
-    threads = []
+    csv_files = []
     for (path_to_file, _, filenames) in iterable:
         for filename in filenames:
             if filename.endswith(".csv"):
@@ -41,15 +41,13 @@ def convertToBVH(directory, use_first_frame_as_tpose, verbose, multithreaded):
                 if filename != tPoseFilename:
                     file_with_path = os.path.join(path_to_file, filename)
                     if multithreaded:
-                        t = multiprocessing.Process(target=CSV_to_BVH, args=[file_with_path, tPose, use_first_frame_as_tpose, verbose])
-                        threads.append(t)
-                        print("starting",file_with_path)
-                        t.start()
+                        csv_files.append(file_with_path)
                     else:
                         CSV_to_BVH(file_with_path, tPose, use_first_frame_as_tpose, verbose)
     if multithreaded:
-        for t in threads:
-            t.join()
+        with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
+            pool.starmap(CSV_to_BVH,
+                         [(file_with_path, tPose, use_first_frame_as_tpose, verbose) for file_with_path in csv_files])
 
 
 def postprocessCSV(directory, verbose):
