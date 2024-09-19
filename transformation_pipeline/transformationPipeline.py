@@ -6,6 +6,7 @@ contributors: Simon Dobers
 """
 from tqdm import tqdm
 import os
+import multiprocessing
 from motion_capture.converters.viconCSV_to_bvh import main as CSV_to_BVH
 from motion_capture.help_scripts.postprocess_data import postprocess
 from motion_capture.help_scripts.renameCSVitems import renameCSVelements, renameDictionary
@@ -13,7 +14,7 @@ from motion_capture.converters.convert_bvh import convert_to_mujoco
 from motion_capture.config_util import CONFIG_YAML
 
 
-def convertToBVH(directory, verbose):
+def convertToBVH(directory, use_first_frame_as_tpose, verbose, multithreaded):
     # Search for tPose file in directory
     # ToDo: check if tPose is fine else warning
     tPose = None
@@ -27,10 +28,11 @@ def convertToBVH(directory, verbose):
         if tPose:
             break
 
-    if verbose:
+    if verbose and not multithreaded:
         iterable = tqdm(os.walk(directory), desc="Converting files to BVH")
     else:
         iterable = os.walk(directory)
+    csv_files = []
     for (path_to_file, _, filenames) in iterable:
         for filename in filenames:
             if filename.endswith(".csv"):
@@ -38,7 +40,14 @@ def convertToBVH(directory, verbose):
                     print("\n--------" + filename + "--------\n")
                 if filename != tPoseFilename:
                     file_with_path = os.path.join(path_to_file, filename)
-                    CSV_to_BVH(file_with_path, tPose, verbose)
+                    if multithreaded:
+                        csv_files.append(file_with_path)
+                    else:
+                        CSV_to_BVH(file_with_path, tPose, use_first_frame_as_tpose, verbose)
+    if multithreaded:
+        with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
+            pool.starmap(CSV_to_BVH,
+                         [(file_with_path, tPose, use_first_frame_as_tpose, verbose) for file_with_path in csv_files])
 
 
 def postprocessCSV(directory, verbose):
@@ -107,6 +116,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Data augmentation')
     parser.add_argument('--directory', type=str, help='Directory that contains the CSV vicon animations and the T-pose')
     parser.add_argument('--toBVH', action='store_true', help='Convert the CSV files into BVH files')
+    parser.add_argument('--sameFileAsTpose', action='store_true', help='Do not use a separate T-pose file, but instead use the first frame as T-pose')
+    parser.add_argument('--multithreaded', action='store_true', help='Use multiple threads to generate the files in parallel')
     parser.add_argument('--toMujoco', action='store_true', help='Convert the CSV files into Mujoco files')
     parser.add_argument(
         '--postprocess',
@@ -121,7 +132,7 @@ if __name__ == "__main__":
         postprocessCSV(args.directory, args.verbose)
 
     if args.toBVH:
-        convertToBVH(args.directory, args.verbose)
+        convertToBVH(args.directory, args.sameFileAsTpose, args.verbose, args.multithreaded)
 
     if args.toMujoco:
         print("\n-------- Converting to .pkl (for Mujoco) -------\n")

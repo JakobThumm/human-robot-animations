@@ -1,0 +1,131 @@
+
+JOINTS_HIERARCHY:
+  'ROOT': ["Root"]
+  'Root': ["L_Collar", "L_Femur", "R_Femur"]
+  # 'LowerBack': ["L_Collar"]
+  'Head': []
+  'L_Collar': ["Head", "L_Humerus", "R_Humerus" ]
+
+  'L_Humerus': ["L_Elbow"]
+  'L_Elbow': ["L_Wrist"]
+  'L_Wrist': []
+
+  'R_Humerus': [ "R_Elbow" ]
+  'R_Elbow': [ "R_Wrist" ]
+  'R_Wrist': []
+
+  'L_Femur': [ "L_Tibia" ]
+  'L_Tibia': [ "L_Foot" ]
+  'L_Foot': [ ]
+  #'L_Toe': []
+
+  'R_Femur': [ "R_Tibia" ]
+  'R_Tibia': [ "R_Foot" ]
+  'R_Foot': []
+  #'R_Toe': []
+
+
+ROOT_JOINT: 'Root'
+
+BONE_HIERARCHY:
+  # https://research.cs.wisc.edu/graphics/Courses/cs-838-1999/Jeff/Example1.bvh
+  # https://research.cs.wisc.edu/graphics/Courses/cs-838-1999/Jeff/BVH.html
+  'Hips': ['Chest', 'LeftUpLeg', 'RightUpLeg']
+  'Chest': ['Neck', 'LeftCollar', 'RightCollar']
+  'Neck': ['Neck_end']
+  'Neck_end': []
+
+  'LeftCollar': ['LeftUpArm']
+  'LeftUpArm': ['LeftLowArm']
+  'LeftLowArm': ['LeftLowArm_end']
+  'LeftLowArm_end': []
+
+  'RightCollar': ['RightUpArm']
+  'RightUpArm': ['RightLowArm']
+  'RightLowArm': ['RightLowArm_end']
+  'RightLowArm_end': []
+
+  'LeftUpLeg': ['LeftLowLeg']
+  'LeftLowLeg': ['LeftFoot_end']
+  'LeftFoot_end': []
+
+  'RightUpLeg': ['RightLowLeg']
+  'RightLowLeg': ['RightFoot_end']
+  'RightFoot_end': []
+
+
+BONE_END_BVH_NAME:
+  'Neck_end': 'Head'
+  'LeftLowArm_end': 'LeftHand'
+  'RightLowArm_end': 'RightHand'
+  'LeftFoot_end': 'LeftFoot'
+  'RightFoot_end': 'RightFoot'
+
+ROOT_BONE: 'Hips'
+
+BONE_BEGIN_AT_JOINT:
+  'Hips': 'Root' # ROOT?
+  'Chest': 'Root'
+  'Neck': 'L_Collar'
+  'Neck_end': 'Head'
+  'LeftCollar': 'L_Collar'
+  'LeftUpArm': 'L_Humerus'
+  'LeftLowArm': 'L_Elbow'
+  'LeftLowArm_end': 'L_Wrist'
+  'RightCollar': 'L_Collar'
+  'RightUpArm': 'R_Humerus'
+  'RightLowArm':  'R_Elbow'
+  'RightLowArm_end': 'R_Wrist'
+
+  'LeftUpLeg': 'Root' # L_Femur ?
+  'LeftLowLeg': 'L_Femur' #  L_Tibia ?
+  'LeftFoot_end': 'L_Tibia' # L_Foot ?
+
+  'RightUpLeg': 'Root'
+  'RightLowLeg': 'R_Femur'
+  'RightFoot_end': 'R_Tibia'
+
+BONE_END_AT_JOINT:
+  'Hips': 'Root'
+  'Chest': 'L_Collar'
+  'Neck': 'Head'
+  'Neck_end': ''
+  'LeftCollar': 'L_Humerus'
+  'LeftUpArm': 'L_Elbow'
+  'LeftLowArm': 'L_Wrist'
+  'LeftLowArm_end': ''
+  'RightCollar': 'R_Humerus'
+  'RightUpArm': 'R_Elbow'
+  'RightLowArm': 'R_Wrist'
+  'RightLowArm_end': ''
+
+  'LeftUpLeg': 'L_Femur' # L_Tibia?
+  'LeftLowLeg': 'L_Tibia' # L_Foot?
+  'LeftFoot_end': ''
+
+  'RightUpLeg': 'R_Femur'
+  'RightLowLeg': 'R_Tibia'
+  'RightFoot_end': ''
+
+ROTATION_IN_DEGREE: true
+
+INIT_TRANSFORMATION_YZ: true
+
+READER: "Lara"
+
+FPS: 100
+
+joint_name_pattern_csv: 'Subject(\w+)'
+
+# postprocessing config, see defautl config in transformation pipeline.py to check which values must be provided
+postprocessing : 
+  'fps': 100
+  'median_filter' : true
+  'interpolation_type' : 'polynomial'     # polynomial or linear
+  'polynomial_degree' : 2                 # ignored if filter_type is 'linear'
+  'median_window' : 10                    # size of window for moving median 
+  'lowpass_filter' : true
+  'lowpass_critical_frequency' : 3
+  'order_lowpass_filter' : 4
+  'use_bidirectional_filter' : true       # if set to yes, scipy sosfiltfilt will be used, otherwise sosfilt
+
