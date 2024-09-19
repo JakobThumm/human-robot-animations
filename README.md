@@ -47,8 +47,14 @@ Please make sure you have a file `tPose*.csv` present in the folder containing t
 
 
 ## Lara
+Download the [LaRA V3](https://zenodo.org/records/8189341) dataset.
+
 Use the following command:
-```MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml python transformationPipeline.py --directory <PATH_OF_LARA_DIR> --toBVH --sameFileAsTpose --multithreaded```
+```
+cd transformation_pipeline
+pip install -r requirements.txt
+MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml python transformationPipeline.py --directory <PATH_OF_LARA_DIR> --toBVH --sameFileAsTpose --multithreaded
+```
 
 Explanation:
 - Set the config file with `MOT_TRANS_CONF_FILE=motion_capture/Lara_config.yaml`, otherwiese `motion_capture/config.yaml` will be used
