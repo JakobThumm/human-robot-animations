@@ -1,10 +1,11 @@
 import csv
 import math
+import copy
 import numpy as np
 
 
 header_v1 = "sample,label,head_RX,head_RY,head_RZ,head_TX,head_TY,head_TZ,head end_RX,head end_RY,head end_RZ,head end_TX,head end_TY,head end_TZ,L collar_RX,L collar_RY,L collar_RZ,L collar_TX,L collar_TY,L collar_TZ,L elbow_RX,L elbow_RY,L elbow_RZ,L elbow_TX,L elbow_TY,L elbow_TZ,L femur_RX,L femur_RY,L femur_RZ,L femur_TX,L femur_TY,L femur_TZ,L foot_RX,L foot_RY,L foot_RZ,L foot_TX,L foot_TY,L foot_TZ,L humerus_RX,L humerus_RY,L humerus_RZ,L humerus_TX,L humerus_TY,L humerus_TZ,L tibia_RX,L tibia_RY,L tibia_RZ,L tibia_TX,L tibia_TY,L tibia_TZ,L toe_RX,L toe_RY,L toe_RZ,L toe_TX,L toe_TY,L toe_TZ,L wrist_RX,L wrist_RY,L wrist_RZ,L wrist_TX,L wrist_TY,L wrist_TZ,L wrist end_RX,L wrist end_RY,L wrist end_RZ,L wrist end_TX,L wrist end_TY,L wrist end_TZ,lower back_RX,lower back_RY,lower back_RZ,lower back_TX,lower back_TY,lower back_TZ,R collar_RX,R collar_RY,R collar_RZ,R collar_TX,R collar_TY,R collar_TZ,R elbow_RX,R elbow_RY,R elbow_RZ,R elbow_TX,R elbow_TY,R elbow_TZ,R femur_RX,R femur_RY,R femur_RZ,R femur_TX,R femur_TY,R femur_TZ,R foot_RX,R foot_RY,R foot_RZ,R foot_TX,R foot_TY,R foot_TZ,R humerus_RX,R humerus_RY,R humerus_RZ,R humerus_TX,R humerus_TY,R humerus_TZ,R tibia_RX,R tibia_RY,R tibia_RZ,R tibia_TX,R tibia_TY,R tibia_TZ,R toe_RX,R toe_RY,R toe_RZ,R toe_TX,R toe_TY,R toe_TZ,R wrist_RX,R wrist_RY,R wrist_RZ,R wrist_TX,R wrist_TY,R wrist_TZ,R wrist end_RX,R wrist end_RY,R wrist end_RZ,R wrist end_TX,R wrist end_TY,R wrist end_TZ,root_RX,root_RY,root_RZ,root_TX,root_TY,root_TZ\n"
-header = "Segments\n" + \
+header_v3 = "Segments\n" + \
     "200\n" + \
     ",,Subject01:Head,,,,,,Subject01:Head_End,,,,,,Subject01:L_Collar,,,,,,Subject01:L_Elbow,,,,,,Subject01:L_Femur,,,,,,Subject01:L_Foot,,,,,,Subject01:L_Humerus,,,,,,Subject01:L_Tibia,,,,,,Subject01:L_Toe,,,,,,Subject01:L_Wrist,,,,,,Subject01:L_Wrist_End,,,,,,Subject01:LowerBack,,,,,,Subject01:R_Collar,,,,,,Subject01:R_Elbow,,,,,,Subject01:R_Femur,,,,,,Subject01:R_Foot,,,,,,Subject01:R_Humerus,,,,,,Subject01:R_Tibia,,,,,,Subject01:R_Toe,,,,,,Subject01:R_Wrist,,,,,,Subject01:R_Wrist_End,,,,,,Subject01:Root,,,,,,\n" +\
     "Frame,Sub Frame,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ,RX,RY,RZ,TX,TY,TZ\n" +\
@@ -106,7 +107,7 @@ relevant_parts_dict = {
     'root': root
 }
 
-parents_dict = {
+parents_pos_dict = { # positions of parent joint
     'head': L_collar,
     'head_end': head,
     'L_collar': lower_back,
@@ -114,13 +115,30 @@ parents_dict = {
     'L_humerus': L_collar,
     'L_wrist': L_elbow,
     'L_wrist_end': L_wrist,
-    'lower_back': lower_back,
+    'lower_back': root,
     'R_collar': lower_back,
     'R_elbow': R_humerus,
     'R_humerus': R_collar,
     'R_wrist': R_elbow,
     'R_wrist_end': R_wrist,
-    'root': root
+    'root': root # no movement
+}
+
+children_dict = { # name of children joint
+    'head': ['head_end'],
+    'head_end': [],
+    'L_collar': ['L_humerus'],
+    'L_elbow': ['L_wrist'],
+    'L_humerus': ['L_elbow'],
+    'L_wrist': ['L_wrist_end'],
+    'L_wrist_end': [],
+    'lower_back': ['R_collar', 'L_collar'],
+    'R_collar': ['L_humerus'],
+    'R_elbow': ['R_wrist'],
+    'R_humerus': ['R_elbow'],
+    'R_wrist': ['R_wrist_end'],
+    'R_wrist_end': [],
+    'root': ['lower_back']
 }
 
 
@@ -184,35 +202,43 @@ def rotate_point_3d(a, b, angle, axis):
     return new_b
 
 
-for moving_bone in relevant_parts_dict.keys():
+def rec_propagate_offset_to_children(joint, offset, parts_dict):
+    for child in children_dict[joint]:
+        parts_dict[child][3:] = parts_dict_copy[child][3:] + offset
+        parts_dict = rec_propagate_offset_to_children(child, offset, parts_dict)
+    return parts_dict
+
+
+parts_dict_copy = copy.deepcopy(parts_dict)
+for ii, moving_bone in enumerate(relevant_parts_dict.keys()):
+
     csv_file_path = moving_bone + ".csv"
 
     with open(csv_file_path, mode='w', newline='') as file:
         # Create a CSV writer
         csv_writer = csv.writer(file)
-        file.write(header)
+        file.write(header_v3)
         ORIG = parts_dict[moving_bone][3:]
-        Origin = parents_dict[moving_bone][3:].copy()
+        Origin = parents_pos_dict[moving_bone][3:].copy()
         axis = (0, 0, 1)  # Rotate around the Z-axis
 
         for i in range(300):
             row = []
             # move some joint
-            #print(parts_dict[moving_bone][3:])
-            #print(rotate_point_3d(Origin, ORIG, i, axis))
             print(Origin)
-            parts_dict[moving_bone][3:] = rotate_point_3d(Origin, ORIG, i/100, axis)
-
+            new_pos = rotate_point_3d(Origin, ORIG, i/100, axis)
+            parts_dict[moving_bone][3:] = new_pos
+            offset = new_pos - ORIG
+            parts_dict = rec_propagate_offset_to_children(moving_bone, offset, parts_dict)
 
             # write to csv
-            # sample = str(i) + ".0000000000e+00"
             row.append(i)
             row.append(0)
             for _, part in parts_dict.items():
                 for value in part:
                     row.append(value)
             csv_writer.writerow(row)
-        # reset bone
-        parts_dict[moving_bone][3:] = ORIG
 
+            # reset bones
+            parts_dict = copy.deepcopy(parts_dict_copy)
 
